@@ -1,11 +1,30 @@
 fn main() {
     let text = "Error handling is the process of handling the possibility of failure. For example, failing to read a file and then continuing to use that bad input would clearly be problematic. Noticing and explicitly managing those errors saves the rest of the program from various pitfalls. There are various ways to deal with errors in Rust, which are described in the following subchapters. They all have more or less subtle differences and different use cases. As a rule of thumb: An explicit panic is mainly useful for tests and dealing with unrecoverable errors. For prototyping it can be useful, for example when dealing with functions that haven't been implemented yet, but in those cases the more descriptive unimplemented is better. In tests panic is a reasonable way to explicitly fail. The Option type is for when a value is optional or when the lack of a value is not an error condition. For example the parent of a directory - / and C: don't have one. When dealing with Options, unwrap is fine for prototyping and cases where it's absolutely certain that there is guaranteed to be a value. However expect is more useful since it lets you specify an error message in case something goes wrong anyway.";
-    println!("{}", wrapper(text, 20));
+    println!("{}", wrapper(text, 50));
 }
 
-fn wrapper(text: &str, column: usize) -> &str {
+fn wrapper(text: &str, column: usize) -> String {
+    let mut paragraph: String = "".to_owned();
+    let mut new_text = wrapper_helper(text, column);
 
-    return ""
+    while match new_text.1 {
+        Some(value) => {
+            let mut p1: String = "\n".to_owned();
+            p1.push_str(new_text.0); 
+            paragraph.push_str(&p1);
+            new_text = wrapper_helper(value, column);
+            true
+        }
+        None => {
+            let mut p1: String = "\n".to_owned();
+            p1.push_str(new_text.0); 
+            paragraph.push_str(&p1);
+            false
+        }
+    }
+    {}
+
+    return paragraph.to_string()
 }
 
 fn wrapper_helper(text: &str, column: usize) -> (&str, Option<&str>) {
