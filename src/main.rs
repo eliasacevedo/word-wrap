@@ -1,5 +1,6 @@
 fn main() {
-    println!("Hello, world!");
+    let texto_prueba = "Este texto es una mera prueba para el ejercicio de hoy";
+    println!("{}", principal(texto_prueba, 10));
 }
 
 fn principal(texto: &str, limite: usize) -> String {
@@ -12,12 +13,14 @@ fn principal(texto: &str, limite: usize) -> String {
 
     while match texto_limitado.1 {
         Some(texto) => {
-            resultado.push_str(format!("\n{}", texto_limitado.0));
+            let texto_mezclado = format!("\n{}", texto_limitado.0);
+            resultado.push_str(&texto_mezclado);
             texto_limitado = soporte(texto, limite as i32);
             true
         }
         None => {
-            resultado.push_str(texto_limitado.0);
+            let texto_mezclado = format!("\n{}", texto_limitado.0);
+            resultado.push_str(&texto_mezclado);
             false
         }
     }{}
@@ -26,7 +29,27 @@ fn principal(texto: &str, limite: usize) -> String {
 }
 
 fn soporte(texto: &str, limite: i32) -> (&str, Option<&str>) {
-    let mut resultado = ("", None);
+    if (texto.len() as i32) < limite {
+        return (texto, None);
+    }
+
+    let resultado = ("", None);
+    let mut pivote = limite - 1;
+    loop {
+        if pivote <= -1 {
+            return (texto, None);
+        }
+
+        let letra = texto.chars().nth(pivote as usize);
+        if letra == Some(' ') {
+            return (
+                &texto[..(pivote as usize)],
+                Some(&texto[(pivote + 1) as usize ..])
+            )
+        }
+
+        pivote -= 1;
+    }
 
     return resultado;
 }
